@@ -1,7 +1,8 @@
-Package: linux-uimage
+Package: linux-sunxi
 Architecture: armhf
 Section: kernel
 Priority: optional
 Description: Linux kernel binary uImage
 Maintainer: Lukas Schauer
+Provides: firmware-linux-free
 version: 1.0
