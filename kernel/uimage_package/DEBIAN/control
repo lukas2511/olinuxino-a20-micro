@@ -1,0 +1,7 @@
+Package: linux-uimage
+Architecture: armhf
+Section: kernel
+Priority: optional
+Description: Linux kernel binary uImage
+Maintainer: Lukas Schauer
+version: 1.0
