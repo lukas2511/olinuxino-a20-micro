@@ -5,4 +5,4 @@ Priority: optional
 Description: Linux kernel binary uImage
 Maintainer: Lukas Schauer
 Provides: firmware-linux-free
-version: 1.0
+version: 3.4.90+

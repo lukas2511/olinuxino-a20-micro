@@ -1,3 +1,10 @@
 [submodule "kernel/linux-sunxi"]
 	path = kernel/linux-sunxi
 	url = https://github.com/lukas2511/linux-sunxi.git
+[submodule "kernel/media_build"]
+	path = kernel/media_build
+	url = git://linuxtv.org/media_build.git
+	ignore = dirty
+[submodule "sunxi-tools/sunxi-tools"]
+	path = sunxi-tools/sunxi-tools
+	url = https://github.com/linux-sunxi/sunxi-tools
