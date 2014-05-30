@@ -70,14 +70,14 @@ kernel_package/usr/src/linux-sunxi-headers: kernel_package/boot kernel_package/l
 media_build/linux/linux-media.tar.bz2:
 	cd media_build/linux; make download untar apply_patches KERNELRELEASE=3.4.90
 
-kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: kernel_package/boot kernel_package/lib kernel_package/usr
+kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: media_build/linux/linux-media.tar.bz2 kernel_package/boot kernel_package/lib kernel_package/usr
 	cd media_build/v4l; make allyesconfig VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi
 	cd media_build/v4l; make VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
 	cd media_build/v4l; make -C firmware install DESTDIR="../../../kernel_package" VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
 	rm -rf kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 	mkdir -p kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
-	arm-linux-gnueabihf-strip --strip-debug $(wildcard media_build/v4l/*.ko)
 	cp -a media_build/v4l/*.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
+	arm-linux-gnueabihf-strip --strip-debug $(wildcard media_build/v4l/*.ko)
 	cp -a ./linux-sunxi/drivers/media/video/sunxi/sunxi_cedar_mod.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 
 # Debian Package
