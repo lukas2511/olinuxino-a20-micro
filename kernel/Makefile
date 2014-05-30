@@ -7,6 +7,12 @@ export DEB_HOST_ARCH     = $(SUBARCH)
 
 all: linux-sunxi.deb
 
+linux-sunxi/.git:
+media_build/.git:
+	cd ..; \
+	git submodule init; \
+	git submodule update
+
 clean:
 	rm -f kernel_package/boot
 	rm -f kernel_package/lib
@@ -16,7 +22,7 @@ clean:
 	cd media_build; git reset --hard; git clean -fxd
 
 menuconfig: linux-sunxi/.config
-	cd -a linux-sunxi; make menuconfig
+	cd linux-sunxi; make menuconfig
 	cp -a linux-sunxi/.config config
 
 # Config
@@ -73,6 +79,7 @@ kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: kernel_packag
 	mkdir -p kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 	arm-linux-gnueabihf-strip --strip-debug $(wildcard media_build/v4l/*.ko)
 	cp -a media_build/v4l/*.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
+	cp -a ./linux-sunxi/drivers/media/video/sunxi/sunxi_cedar_mod.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 
 # Debian Package
 
