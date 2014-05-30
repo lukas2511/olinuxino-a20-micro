@@ -14,9 +14,9 @@ media_build/.git:
 	git submodule update
 
 clean:
-	rm -f kernel_package/boot
-	rm -f kernel_package/lib
-	rm -f kernel_package/usr
+	rm -rf kernel_package/boot
+	rm -rf kernel_package/lib
+	rm -rf kernel_package/usr
 	rm -f *.deb
 	cd linux-sunxi; git reset --hard; git clean -fxd
 	cd media_build; git reset --hard; git clean -fxd
