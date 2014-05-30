@@ -2,7 +2,6 @@ export ARCH              = arm
 export SUBARCH           = armhf
 export CROSS_COMPILE     = arm-linux-gnueabihf-
 export CONCURRENCY_LEVEL = 10
-export PATH             := /opt/arm-linux-gnueabihf/:$(PATH)
 export DEB_HOST_ARCH     = $(SUBARCH)
 
 all: linux-sunxi.deb
