@@ -76,8 +76,8 @@ kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: media_build/l
 	cd media_build/v4l; make -C firmware install DESTDIR="../../../kernel_package" VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
 	rm -rf kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 	mkdir -p kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
+	arm-linux-gnueabihf-strip --strip-debug media_build/v4l/*.ko
 	cp -a media_build/v4l/*.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
-	arm-linux-gnueabihf-strip --strip-debug $(wildcard media_build/v4l/*.ko)
 	cp -a ./linux-sunxi/drivers/media/video/sunxi/sunxi_cedar_mod.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
 
 # Debian Package
