@@ -14,3 +14,6 @@
 [submodule "uboot/u-boot-sunxi"]
 	path = uboot/u-boot-sunxi
 	url = https://github.com/linux-sunxi/u-boot-sunxi.git
+[submodule "uboot/u-boot-sunxi-next"]
+	path = uboot/u-boot-sunxi-next
+	url = https://github.com/jwrdegoede/u-boot-sunxi.git
