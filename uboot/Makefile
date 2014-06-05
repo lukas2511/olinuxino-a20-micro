@@ -14,3 +14,7 @@ uboot.bin: u-boot-sunxi/u-boot-sunxi-with-spl.bin
 u-boot-sunxi/u-boot-sunxi-with-spl.bin:
 	cd u-boot-sunxi; make A20-OLinuXino_MICRO_config
 	cd u-boot-sunxi; make -j$(CONCURRENCY_LEVEL)
+
+install:
+	scp uboot.bin root@192.168.100.30:/tmp/uboot.bin
+	ssh root@192.168.100.30 dd if=/tmp/uboot.bin of=/dev/mmcblk0 bs=1024 seek=8
