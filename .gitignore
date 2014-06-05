@@ -6,4 +6,3 @@ kernel-mainline/*.deb
 kernel-mainline/kernel_package
 
 uboot/uboot.bin
-uboot/uboot-next.bin
