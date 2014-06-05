@@ -11,3 +11,6 @@
 [submodule "kernel-mainline/linux-sunxi-next"]
 	path = kernel-mainline/linux-sunxi-next
 	url = https://github.com/linux-sunxi/linux-sunxi.git
+[submodule "uboot/u-boot-sunxi"]
+	path = uboot/u-boot-sunxi
+	url = https://github.com/jwrdegoede/u-boot-sunxi.git
