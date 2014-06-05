@@ -8,3 +8,9 @@
 [submodule "sunxi-tools/sunxi-tools"]
 	path = sunxi-tools/sunxi-tools
 	url = https://github.com/linux-sunxi/sunxi-tools
+[submodule "kernel-mainline/linux-sunxi-next"]
+	path = kernel-mainline/linux-sunxi-next
+	url = https://github.com/linux-sunxi/linux-sunxi.git
+[submodule "uboot/u-boot-sunxi"]
+	path = uboot/u-boot-sunxi
+	url = https://github.com/linux-sunxi/u-boot-sunxi.git
