@@ -82,7 +82,7 @@ kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: media_build/l
 
 # Debian Package
 
-linux-sunxi.deb: kernel_package/usr/src/linux-sunxi-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko
+linux-sunxi.deb: linux-sunxi/.git media_build/.git kernel_package/usr/src/linux-sunxi-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko
 	rm -f linux-sunxi.deb
 	/sbin/depmod -b kernel_package/ 3.4.90+
 	fakeroot dpkg-deb -b kernel_package linux-sunxi.deb
