@@ -8,7 +8,7 @@ my build-tree for olinuxino-a20-micro stuff
  * sunxi-tools/ - contains makefiles to build sunxi-tools.deb containing the sunxi-tools like fex2bin etc.
  * uboot/ - contains makefiles to build uboot.bin (dd to microsd-card to use)
 
-###### Easy-Build-Container Stuff
+### Easy-Build-Container Stuff
 
 This requires [docker](http://www.docker.com)
 
