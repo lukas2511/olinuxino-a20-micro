@@ -1,0 +1,8 @@
+Package: linux-sunxi-next
+Architecture: armhf
+Section: kernel
+Priority: optional
+Description: linux-sunxi-next for olinuxino-a20-micro
+Maintainer: Lukas Schauer
+Provides: firmware-linux-free
+version: 3.15.0
