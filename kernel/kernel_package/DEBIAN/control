@@ -2,7 +2,7 @@ Package: linux-sunxi
 Architecture: armhf
 Section: kernel
 Priority: optional
-Description: Linux kernel binary uImage
+Description: linux-sunxi for olinuxino-a20-micro
 Maintainer: Lukas Schauer
 Provides: firmware-linux-free
 version: 3.4.90+

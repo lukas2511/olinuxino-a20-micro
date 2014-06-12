@@ -8,9 +8,10 @@ export FULLVERSION       = 3.15.0-rc6-130763-g119918d
 
 all: linux-$(VERSION).deb
 
-linux-$(VERSION):
-	wget -c https://www.kernel.org/pub/linux/kernel/v3.x/testing/linux-$(VERSION).tar.xz
-	tar xf linux-$(VERSION).tar.xz
+linux-$(VERSION)/.git:
+	cd ..; \
+	git submodule init; \
+	git submodule update
 
 clean:
 	rm -rf kernel_package/boot
@@ -66,7 +67,7 @@ kernel_package/usr/src/linux-$(VERSION)-headers: kernel_package/boot kernel_pack
 
 # Debian Package
 
-linux-$(VERSION).deb: kernel_package/usr/src/linux-$(VERSION)-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control
+linux-$(VERSION).deb: linux-$(VERSION)/.git kernel_package/usr/src/linux-$(VERSION)-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control
 	rm -f linux-$(VERSION).deb
 	/sbin/depmod -b kernel_package/ $(FULLVERSION)
 	fakeroot dpkg-deb -b kernel_package linux-$(VERSION).deb
