@@ -22,6 +22,9 @@ RUN apt-get install -y pkg-config libusb-1.0-0-dev
 # Install debootstrap and qemu-utils
 RUN apt-get install -y debootstrap qemu-utils
 
+# Install qemu-user-static
+RUN apt-get install -y qemu-user-static
+
 VOLUME ["/root/build"]
 
 ENV HOME /root
