@@ -16,6 +16,9 @@ RUN apt-get install -y build-essential ncurses-dev kmod libproc-processtable-per
 RUN apt-get install -y gcc-4.7-arm-linux-gnueabihf 
 RUN ln -s /usr/bin/arm-linux-gnueabihf-gcc-4.7 /usr/bin/arm-linux-gnueabihf-gcc
 
+# Install libusb headers and pkg-config
+RUN apt-get install -y pkg-config libusb-1.0-0-dev
+
 VOLUME ["/root/build"]
 
 ENV HOME /root
