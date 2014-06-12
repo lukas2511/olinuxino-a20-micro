@@ -7,7 +7,7 @@ RUN apt-get install --force-yes -y emdebian-archive-keyring
 RUN apt-get update
 
 # Install basic tools
-RUN apt-get install -y curl sudo wget bc rsync
+RUN apt-get install -y curl sudo wget bc rsync git
 
 # Install build tools
 RUN apt-get install -y build-essential ncurses-dev kmod libproc-processtable-perl uboot-mkimage
