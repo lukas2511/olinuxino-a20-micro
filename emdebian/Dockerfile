@@ -13,7 +13,7 @@ RUN apt-get install -y curl sudo wget bc rsync
 RUN apt-get install -y build-essential ncurses-dev kmod libproc-processtable-perl uboot-mkimage
 
 # Install emdebian toolchain
-RUN apt-get install gcc-4.7-arm-linux-gnueabihf 
+RUN apt-get install -y gcc-4.7-arm-linux-gnueabihf 
 RUN ln -s /usr/bin/arm-linux-gnueabihf-gcc-4.7 /usr/bin/arm-linux-gnueabihf-gcc
 
 VOLUME ["/root/build"]
