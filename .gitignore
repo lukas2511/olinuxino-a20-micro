@@ -3,3 +3,5 @@
 */debian_package
 uboot/uboot.bin
 scriptfile/script.bin
+sdcard/*/rootfs
+sdcard/*/rootfs_cache
