@@ -3,6 +3,7 @@ export SUBARCH           = armhf
 export CROSS_COMPILE     = arm-linux-gnueabihf-
 export CONCURRENCY_LEVEL = 10
 export DEB_HOST_ARCH     = $(SUBARCH)
+export VERSION		 = 3.4.90
 
 all: linux-sunxi.deb
 
@@ -68,21 +69,21 @@ kernel_package/usr/src/linux-sunxi-headers: kernel_package/boot kernel_package/l
 # linuxtv modules
 
 media_build/linux/linux-media.tar.bz2:
-	cd media_build/linux; make download untar apply_patches KERNELRELEASE=3.4.90
+	cd media_build/linux; make download untar apply_patches KERNELRELEASE=$(VERSION)
 
-kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko: media_build/linux/linux-media.tar.bz2 kernel_package/boot kernel_package/lib kernel_package/usr
-	cd media_build/v4l; make allyesconfig VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi
-	cd media_build/v4l; make VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
-	cd media_build/v4l; make -C firmware install DESTDIR="../../../kernel_package" VER=3.4.90 KERNELRELEASE=3.4.90 SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
-	rm -rf kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
-	mkdir -p kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
+kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/em28xx.ko: media_build/linux/linux-media.tar.bz2 kernel_package/boot kernel_package/lib kernel_package/usr
+	cd media_build/v4l; make allyesconfig VER=$(VERSION) KERNELRELEASE=$(VERSION) SRCDIR=$(PWD)/linux-sunxi
+	cd media_build/v4l; make VER=$(VERSION) KERNELRELEASE=$(VERSION) SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
+	cd media_build/v4l; make -C firmware install DESTDIR="../../../kernel_package" VER=$(VERSION) KERNELRELEASE=$(VERSION) SRCDIR=$(PWD)/linux-sunxi -j$(CONCURRENCY_LEVEL)
+	rm -rf kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/
+	mkdir -p kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/
 	arm-linux-gnueabihf-strip --strip-debug media_build/v4l/*.ko
-	cp -a media_build/v4l/*.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
-	cp -a ./linux-sunxi/drivers/media/video/sunxi/sunxi_cedar_mod.ko kernel_package/lib/modules/3.4.90+/kernel/drivers/media/
+	cp -a media_build/v4l/*.ko kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/
+	cp -a ./linux-sunxi/drivers/media/video/sunxi/sunxi_cedar_mod.ko kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/
 
 # Debian Package
 
-linux-sunxi.deb: linux-sunxi/.git media_build/.git kernel_package/usr/src/linux-sunxi-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control kernel_package/lib/modules/3.4.90+/kernel/drivers/media/em28xx.ko
+linux-sunxi.deb: linux-sunxi/.git media_build/.git kernel_package/usr/src/linux-sunxi-headers kernel_package/lib kernel_package/boot kernel_package/DEBIAN/control kernel_package/lib/modules/$(VERSION)/kernel/drivers/media/em28xx.ko
 	rm -f linux-sunxi.deb
-	/sbin/depmod -b kernel_package/ 3.4.90+
+	/sbin/depmod -b kernel_package/ $(VERSION)
 	fakeroot dpkg-deb -b kernel_package linux-sunxi.deb
