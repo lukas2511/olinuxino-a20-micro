@@ -1,0 +1,7 @@
+Package: olinuxino-a20-micro-fexfile
+Architecture: armhf
+Section: whatever
+Priority: optional
+Description: fexfile for olinuxino-a20-micro
+Maintainer: Lukas Schauer
+version: 1.2
