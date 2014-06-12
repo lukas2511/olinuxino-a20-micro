@@ -1,8 +1,4 @@
-kernel/*.deb
-kernel/kernel_package
-kernel/linux-media
-
-kernel-mainline/*.deb
-kernel-mainline/kernel_package
-
+*/*.deb
+*/kernel_package
+*/debian_package
 uboot/uboot.bin
