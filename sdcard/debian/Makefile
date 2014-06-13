@@ -45,3 +45,4 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	rm rootfs/olinuxino-a20-micro-fexfile.deb
 	echo 'T0:23:respawn:/sbin/getty -L ttyS0 115200 vt100' >> rootfs/etc/inittab
 	sed -i 's/root:\*/root:4TL.6CCyuNsMQ/' rootfs/etc/shadow
+	echo olinuxino > rootfs/etc/hostname
