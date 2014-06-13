@@ -36,6 +36,10 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	proot -r rootfs -w / -q qemu-arm-static apt-get install locales -y
 	echo 'en_US.UTF-8 UTF-8' > rootfs/etc/locale.gen
 	proot -r rootfs -w / -q qemu-arm-static locale-gen
+	mkdir rootfs/etc/ssh
+	cp stuff/dummy_keys/* rootfs/etc/ssh/
+	chmod 600 stuff/dummy_keys/*
+	chmod 755 stuff/dummy_keys/*.pub
 	proot -r rootfs -w / -q qemu-arm-static apt-get install openssh-server -y
 	proot -r rootfs -w / -q qemu-arm-static /etc/init.d/ssh stop
 	cat stuff/network_interfaces > rootfs/etc/network/interfaces
