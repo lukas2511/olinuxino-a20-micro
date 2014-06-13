@@ -25,6 +25,10 @@ RUN apt-get install -y debootstrap qemu-utils
 # Install qemu-user-static
 RUN apt-get install -y qemu-user-static
 
+# Install proot
+ADD http://static.proot.me/proot-x86_64 /usr/bin/proot
+RUN chmod a+x /usr/bin/proot
+
 VOLUME ["/root/build"]
 
 ENV HOME /root
