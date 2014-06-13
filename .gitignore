@@ -5,3 +5,4 @@ uboot/uboot.bin
 scriptfile/script.bin
 sdcard/*/rootfs
 sdcard/*/rootfs_cache
+sdcard/*/*.img
