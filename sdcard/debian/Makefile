@@ -29,7 +29,7 @@ rootfs_cache:
 	cat stuff/sources.list > rootfs_cache/etc/apt/sources.list
 	chroot rootfs_cache apt-get update
 	chroot rootfs_cache apt-get upgrade -y
-	chroot rootfs apt-get install locales openssh-server -d -y
+	chroot rootfs_cache apt-get install locales openssh-server -d -y
 
 rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	rsync --archive --delete rootfs_cache/ rootfs
