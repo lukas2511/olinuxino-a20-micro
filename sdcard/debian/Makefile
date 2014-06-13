@@ -4,6 +4,7 @@ debian.img:
 	cd ../../kernel; make linux-sunxi.deb
 	cd ../../uboot; make uboot.bin
 	cd ../../scriptfile; make olinuxino-a20-micro-fexfile.deb
+	cd ../../sunxi-tools; make sunxi-tools.deb
 	make rootfs
 	dd if=/dev/zero of=debian.img bs=10M count=100
 	echo -e 'o \n n \n p \n \n \n \n w \n' | fdisk debian.img
@@ -44,6 +45,9 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	cp ../../scriptfile/olinuxino-a20-micro-fexfile.deb rootfs/olinuxino-a20-micro-fexfile.deb
 	chroot rootfs dpkg -i /olinuxino-a20-micro-fexfile.deb
 	rm rootfs/olinuxino-a20-micro-fexfile.deb
+	cp ../../sunxi-tools/sunxi-tools.deb rootfs/sunxi-tools.deb
+	chroot rootfs dpkg -i /sunxi-tools.deb
+	rm rootfs/sunxi-tools.deb
 	echo 'T0:23:respawn:/sbin/getty -L ttyS0 115200 vt100' >> rootfs/etc/inittab
 	sed -i 's/root:\*/root:4TL.6CCyuNsMQ/' rootfs/etc/shadow
 	echo olinuxino > rootfs/etc/hostname
