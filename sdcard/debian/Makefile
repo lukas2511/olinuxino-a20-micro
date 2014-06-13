@@ -26,7 +26,7 @@ rootfs_cache:
 	debootstrap --arch=armhf --foreign wheezy rootfs_cache http://ftp.de.debian.org/debian
 	cp /usr/bin/qemu-arm-static rootfs_cache/usr/bin
 	chroot rootfs_cache /debootstrap/debootstrap --second-stage
-	cat sources.list > rootfs_cache/etc/apt/sources.list
+	cat stuff/sources.list > rootfs_cache/etc/apt/sources.list
 	chroot rootfs_cache apt-get update
 	chroot rootfs_cache apt-get upgrade -y
 	chroot rootfs apt-get install locales openssh-server -d -y
@@ -38,7 +38,7 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	chroot rootfs locale-gen
 	chroot rootfs apt-get install openssh-server -y
 	chroot rootfs /etc/init.d/ssh stop
-	cat network_interfaces > rootfs/etc/network/interfaces
+	cat stuff/network_interfaces > rootfs/etc/network/interfaces
 	cp ../../kernel/linux-sunxi.deb rootfs/linux-sunxi.deb
 	chroot rootfs dpkg -i /linux-sunxi.deb
 	rm rootfs/linux-sunxi.deb
@@ -51,3 +51,8 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	echo 'T0:23:respawn:/sbin/getty -L ttyS0 115200 vt100' >> rootfs/etc/inittab
 	sed -i 's/root:\*/root:4TL.6CCyuNsMQ/' rootfs/etc/shadow
 	echo olinuxino > rootfs/etc/hostname
+	cp stuff/autoresize_partition.sh rootfs/usr/sbin/autoresize_partition.sh
+	chmod a+x rootfs/usr/sbin/autoresize_partition.sh
+	cp stuff/rc.local rootfs/etc/rc.local
+	chmod a+x rootfs/etc/rc.local
+	touch rootfs/etc/.firstboot
