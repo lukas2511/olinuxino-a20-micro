@@ -6,7 +6,7 @@ debian.img:
 	cd ../../scriptfile; make olinuxino-a20-micro-fexfile.deb
 	cd ../../sunxi-tools; make sunxi-tools.deb
 	make rootfs
-	dd if=/dev/zero of=debian.img bs=10M count=100
+	dd if=/dev/zero of=debian.img bs=10M count=50
 	echo -e 'o \n n \n p \n \n \n \n w \n' | fdisk debian.img
 	losetup /dev/loop0 2> /dev/null && losetup -d /dev/loop0 || true
 	losetup --offset 1048576 /dev/loop0 debian.img
@@ -56,3 +56,5 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	cp stuff/rc.local rootfs/etc/rc.local
 	chmod a+x rootfs/etc/rc.local
 	touch rootfs/etc/.firstboot
+	chroot rootfs apt-get clean
+	cat stuff/fstab > rootfs/etc/fstab
