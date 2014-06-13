@@ -1,0 +1,108 @@
+diff --git a/debootstrap b/debootstrap
+index f336164..613b41e 100755
+--- a/debootstrap
++++ b/debootstrap
+@@ -99,7 +99,7 @@ usage()
+                              archive
+       --variant=X            use variant X of the bootstrap scripts
+                              (currently supported variants: buildd, fakechroot,
+-                              scratchbox, minbase)
++                              scratchbox, minbase, proot)
+       --keyring=K            check Release files against keyring K
+       --no-check-gpg         avoid checking Release file signatures
+       --no-resolve-deps      don't try to resolve dependencies automatically
+@@ -450,6 +450,8 @@ elif doing_variant scratchbox; then
+ 	done
+ 	[ "x$SB2_TARGET" != "x" ] || error 1 SBOXTARGETREQ "No scratchbox target configured for $TARGET"
+ 	CHROOT_CMD="sb2 -eR -t $SB2_TARGET"
++elif doing_variant proot; then
++    CHROOT_CMD="proot -v -1 -0 -b /dev -b /sys -b /proc -b /tmp $TARGET"
+ else
+ 	CHROOT_CMD="chroot $TARGET"
+ fi
+@@ -466,10 +468,12 @@ export ARCH SUITE TARGET CHROOT_CMD SHA_SIZE DEBOOTSTRAP_CHECKSUM_FIELD
+ 
+ if am_doing_phase first_stage second_stage; then
+ 	if in_path id && [ `id -u` -ne 0 ]; then
+-		error 1 NEEDROOT "debootstrap can only run as root"
++        if ! doing_variant proot; then
++		    error 1 NEEDROOT "debootstrap can only run as root"
++        fi
+ 	fi
+ 	# Ensure that we can create working devices and executables on the target.
+-	if ! check_sane_mount "$TARGET"; then
++	if ! doing_variant proot && ! check_sane_mount "$TARGET"; then
+ 		error 1 NOEXEC "Cannot install into target '$TARGET' mounted with noexec or nodev"
+ 	fi
+ fi
+@@ -619,7 +623,9 @@ if am_doing_phase first_stage; then
+ 	if ! am_doing_phase second_stage; then
+ 		cp "$0"				 "$TARGET/debootstrap/debootstrap"
+ 		cp $DEBOOTSTRAP_DIR/functions	 "$TARGET/debootstrap/functions"
+-		cp $DEBOOTSTRAP_DIR/devices.tar.gz	 "$TARGET/debootstrap/devices.tar.gz"
++        if ! doing_variant proot; then
++			cp $DEBOOTSTRAP_DIR/devices.tar.gz	 "$TARGET/debootstrap/devices.tar.gz"
++        fi
+ 		cp $SCRIPT			 "$TARGET/debootstrap/suite-script"
+ 		echo "$ARCH"			>"$TARGET/debootstrap/arch"
+ 		echo "$SUITE"			>"$TARGET/debootstrap/suite"
+diff --git a/functions b/functions
+index c1e938e..eba40c1 100644
+--- a/functions
++++ b/functions
+@@ -1036,6 +1036,12 @@ setup_devices () {
+ 		return 0
+ 	fi
+ 
++    if doing_variant proot; then
++        # No need to do anything fo the /dev directory in the target
++        # filesystem. PRoot will mirror the host /dev to be the target /dev.
++        return 0
++    fi
++
+ 	case "$HOST_OS" in
+ 	    kfreebsd*)
+ 		in_target mount -t devfs devfs /dev ;;
+diff --git a/scripts/sid b/scripts/sid
+index 893d5d5..e34870f 100644
+--- a/scripts/sid
++++ b/scripts/sid
+@@ -1,7 +1,7 @@
+ mirror_style release
+ download_style apt
+ finddebs_style from-indices
+-variants - buildd fakechroot minbase scratchbox
++variants - buildd fakechroot minbase scratchbox proot
+ keyring /usr/share/keyrings/debian-archive-keyring.gpg
+ 
+ if doing_variant fakechroot; then
+@@ -22,7 +22,7 @@ work_out_debs () {
+ 		#required="$required $(get_debs Priority: important)"
+ 		#  ^^ should be getting debconf here somehow maybe
+ 		base="$(get_debs Priority: important)"
+-	elif doing_variant buildd || doing_variant scratchbox; then
++	elif doing_variant buildd || doing_variant scratchbox || doing_variant proot; then
+ 		base="apt build-essential"
+ 	elif doing_variant minbase; then
+ 		base="apt"
+@@ -44,7 +44,9 @@ first_stage_install () {
+ 	setup_etc
+ 	if [ ! -e "$TARGET/etc/fstab" ]; then
+ 		echo '# UNCONFIGURED FSTAB FOR BASE SYSTEM' > "$TARGET/etc/fstab"
+-		chown 0:0 "$TARGET/etc/fstab"; chmod 644 "$TARGET/etc/fstab"
++        if ! doing_variant proot; then
++			chown 0:0 "$TARGET/etc/fstab"; chmod 644 "$TARGET/etc/fstab"
++        fi
+ 	fi
+ 
+ 	x_feign_install () {
+@@ -81,6 +83,8 @@ second_stage_install () {
+ 		setup_proc_fakechroot
+ 	elif doing_variant scratchbox; then
+ 		true
++    elif doing_variant proot; then
++        true
+ 	else
+ 		setup_proc
+ 		in_target /sbin/ldconfig
+

@@ -29,6 +29,11 @@ RUN apt-get install -y qemu-user-static
 ADD http://static.proot.me/proot-x86_64 /usr/bin/proot
 RUN chmod a+x /usr/bin/proot
 
+# Install patched debootstrap
+ADD ./debootstrap.deb /root/debootstrap.deb
+RUN dpkg -i /root/debootstrap.deb
+RUN rm /root/debootstrap.deb
+
 VOLUME ["/root/build"]
 
 ENV HOME /root
