@@ -5,6 +5,19 @@ debian.img:
 	cd ../../uboot; make uboot.bin
 	cd ../../scriptfile; make olinuxino-a20-micro-fexfile.deb
 	make rootfs
+	dd if=/dev/zero of=debian.img bs=10M count=100
+	echo -e 'o \n n \n p \n \n \n \n w \n' | fdisk debian.img
+	losetup /dev/loop0 2> /dev/null && losetup -d /dev/loop0 || true
+	losetup --offset 1048576 /dev/loop0 debian.img
+	mkfs.ext4 /dev/loop0
+	umount -l /mnt 2> /dev/null || true
+	mount /dev/loop0 /mnt
+	rmdir /mnt/lost+found
+	rsync --archive rootfs/ /mnt/
+	sync
+	umount /mnt
+	losetup -d /dev/loop0
+	dd if=../../uboot/uboot.bin of=debian.img bs=1024 seek=8 conv=notrunc
 
 rootfs_cache:
 	if [ -d "rootfs_cache/sys/fs" ]; then umount rootfs_cache/sys; fi
