@@ -40,7 +40,11 @@ rootfs: rootfs_cache ../../kernel/linux-sunxi.deb
 	cp stuff/dummy_keys/* rootfs/etc/ssh/
 	chmod 600 stuff/dummy_keys/*
 	chmod 755 stuff/dummy_keys/*.pub
+	mv rootfs/usr/sbin/invoke-rc.d rootfs/usr/sbin/invoke-rc.d.orig
+	cp stuff/i_hate_debian.sh rootfs/usr/sbin/invoke-rc.d
+	chmod a+x rootfs/usr/sbin/invoke-rc.d
 	proot -r rootfs -w / -q qemu-arm-static apt-get install openssh-server -y
+	mv rootfs/usr/sbin/invoke-rc.d.orig rootfs/usr/sbin/invoke-rc.d
 	proot -r rootfs -w / -q qemu-arm-static /etc/init.d/ssh stop
 	cat stuff/network_interfaces > rootfs/etc/network/interfaces
 	cp ../../kernel/linux-sunxi.deb rootfs/linux-sunxi.deb
